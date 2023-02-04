@@ -20,8 +20,8 @@ type Weather struct {
 }
 
 func main() {
-	bot, err := telebot.NewBot(telebot.Settings{
-		Token:  "5495592211:AAHJeSS4XXNiYUFlw0UKHNh5azBlV3edlrM",
+	b, err := telebot.NewBot(telebot.Settings{
+		Token:  "Mytoken",
 		Poller: &telebot.LongPoller{10 * time.Second},
 	})
 	if err != nil {
@@ -29,33 +29,34 @@ func main() {
 		return
 	}
 
-	bot.Handle("/weather", func(message *telebot.Message) {
+	b.Handle("/weather", func(message *telebot.Message) {
 		city := strings.TrimSpace(message.Text[len("/weather"):])
 
 		if city == "" {
-			bot.Send(message.Chat, "Укажите город...", nil)
+			b.Send(message.Chat, "Укажите город...", nil)
 			return
 		}
 
 		weather, err := getWeather(city)
 		if err != nil {
-			bot.Send(message.Chat, "Нет Данных о Погоде"+err.Error(), nil)
+			b.Send(message.Chat, "Нет Данных о Погоде"+err.Error(), nil)
 			return
 		}
 
-		bot.Send(message.Chat,
+		b.Send(message.Chat,
 			fmt.Sprintf("Temperature in %s: %.1f°C\nPressure: %d hPa\nHumidity: %d%%\nMin: %.1f°C\nMax: %.1f°C",
 				city, weather.Temp-273.15, weather.Pressure, weather.Humidity, weather.TempMin-273.15, weather.TempMax-273.15), nil)
 	})
 
-	err = bot.Start()
+	err = b.sta
 	if err != nil {
 		fmt.Println(err)
 	}
+
 }
 
 func getWeather(city string) (*Weather, error) {
-	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=69f419a6aafc99369a5ccacd7d5d5bb4\n")
+	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=OpenWeatherAPI\n")
 	if err != nil {
 		return nil, err
 	}
