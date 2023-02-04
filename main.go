@@ -12,18 +12,16 @@ import (
 )
 
 type Weather struct {
-	Main struct {
-		Temp     float64 `json:"temp"`
-		Pressure int     `json:"pressure"`
-		Humidity int     `json:"humidity"`
-		TempMin  float64 `json:"temp_min"`
-		TempMax  float64 `json:"temp_max"`
-	} `json:"main"`
+	Temp     float64 `json:"temp"`
+	Pressure int     `json:"pressure"`
+	Humidity int     `json:"humidity"`
+	TempMin  float64 `json:"temp_min"`
+	TempMax  float64 `json:"temp_max"`
 }
 
 func main() {
 	bot, err := telebot.NewBot(telebot.Settings{
-		Token:  "MyTokenBot",
+		Token:  "5495592211:AAHJeSS4XXNiYUFlw0UKHNh5azBlV3edlrM",
 		Poller: &telebot.LongPoller{10 * time.Second},
 	})
 	if err != nil {
@@ -47,7 +45,7 @@ func main() {
 
 		bot.Send(message.Chat,
 			fmt.Sprintf("Temperature in %s: %.1f°C\nPressure: %d hPa\nHumidity: %d%%\nMin: %.1f°C\nMax: %.1f°C",
-				city, weather.Main.Temp-273.15, weather.Main.Pressure, weather.Main.Humidity, weather.Main.TempMin-273.15, weather.Main.TempMax-273.15), nil)
+				city, weather.Temp-273.15, weather.Pressure, weather.Humidity, weather.TempMin-273.15, weather.TempMax-273.15), nil)
 	})
 
 	err = bot.Start()
@@ -57,7 +55,7 @@ func main() {
 }
 
 func getWeather(city string) (*Weather, error) {
-	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=APIopeneWather")
+	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=69f419a6aafc99369a5ccacd7d5d5bb4\n")
 	if err != nil {
 		return nil, err
 	}
@@ -75,3 +73,4 @@ func getWeather(city string) (*Weather, error) {
 
 	return &weather, nil
 }
+
