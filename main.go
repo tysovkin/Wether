@@ -48,7 +48,7 @@ func main() {
 				city, weather.Temp-273.15, weather.Pressure, weather.Humidity, weather.TempMin-273.15, weather.TempMax-273.15), nil)
 	})
 
-	err = b.sta
+	b.Start()
 	if err != nil {
 		fmt.Println(err)
 	}
