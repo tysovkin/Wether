@@ -3,12 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	tele "github.com/tucnak/telebot"
+	"io"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/tucnak/telebot"
 )
 
 type Weather struct {
@@ -20,20 +19,19 @@ type Weather struct {
 }
 
 func main() {
-	b, err := telebot.NewBot(telebot.Settings{
-		Token:  "Mytoken",
-		Poller: &telebot.LongPoller{10 * time.Second},
+	b, err := tele.NewBot(tele.Settings{
+		Token:  "{YourTelegramToken}",
+		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
 	})
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	b.Handle("/weather", func(message *telebot.Message) {
+	b.Handle("/weather", func(message tele.Message) {
 		city := strings.TrimSpace(message.Text[len("/weather"):])
 
 		if city == "" {
-			b.Send(message.Chat, "Укажите город...", nil)
+			b.Send(message.OriginalChat, "Укажите город...", nil)
 			return
 		}
 
@@ -56,13 +54,13 @@ func main() {
 }
 
 func getWeather(city string) (*Weather, error) {
-	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=OpenWeatherAPI\n")
+	resp, err := http.Get("http://api.openweathermap.org/geo/1.0/weather?q=" + city + "&limit=5&appid={YourOpenWetherToken}\n")
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -74,4 +72,3 @@ func getWeather(city string) (*Weather, error) {
 
 	return &weather, nil
 }
-
