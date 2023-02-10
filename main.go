@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
-
-	tgbotapi "github.com/Syfaro/telegram-bot-api"
+        "github.com/Syfaro/telegram-bot-api"
 	"github.com/briandowns/openweathermap"
 )
 
