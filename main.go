@@ -14,7 +14,7 @@ type Weather struct {
 }
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("5495592211:AAHJeSS4XXNiYUFlw0UKHNh5azBlV3edlrM")
+	bot, err := tgbotapi.NewBotAPI("YourTelegramToken")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -49,7 +49,7 @@ func main() {
 }
 
 func getWeather(city string) (Weather, error) {
-	w, err := openweathermap.NewCurrent("C", "ru", "69f419a6aafc99369a5ccacd7d5d5bb4")
+	w, err := openweathermap.NewCurrent("C", "ru", "YourTokenOpenweather")
 	if err != nil {
 		return Weather{}, err
 	}
