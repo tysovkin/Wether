@@ -1,74 +1,66 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	tele "github.com/tucnak/telebot"
-	"io"
-	"net/http"
 	"strings"
-	"time"
+
+	tgbotapi "github.com/Syfaro/telegram-bot-api"
+	"github.com/briandowns/openweathermap"
 )
 
 type Weather struct {
-	Temp     float64 `json:"temp"`
-	Pressure int     `json:"pressure"`
-	Humidity int     `json:"humidity"`
-	TempMin  float64 `json:"temp_min"`
-	TempMax  float64 `json:"temp_max"`
+	Temperature float64 `json:"temp"`
+	Humidity    float64 `json:"humidity"`
 }
 
 func main() {
-	b, err := tele.NewBot(tele.Settings{
-		Token:  "{YourTelegramToken}",
-		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
-	})
+	bot, err := tgbotapi.NewBotAPI("5495592211:AAHJeSS4XXNiYUFlw0UKHNh5azBlV3edlrM")
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
-	b.Handle("/weather", func(message tele.Message) {
-		city := strings.TrimSpace(message.Text[len("/weather"):])
 
-		if city == "" {
-			b.Send(message.OriginalChat, "Укажите город...", nil)
-			return
+	bot.Debug = true
+
+	updateConfig := tgbotapi.NewUpdate(0)
+	updateConfig.Timeout = 60
+
+	updates, err := bot.GetUpdatesChan(updateConfig)
+
+	for update := range updates {
+		if update.Message == nil {
+			continue
 		}
 
+		if !strings.HasPrefix(update.Message.Text, "/weather") {
+			continue
+		}
+
+		city := strings.TrimSpace(strings.TrimPrefix(update.Message.Text, "/weather"))
 		weather, err := getWeather(city)
 		if err != nil {
-			b.Send(message.Chat, "Нет Данных о Погоде"+err.Error(), nil)
-			return
+			bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, err.Error()))
+			continue
 		}
 
-		b.Send(message.Chat,
-			fmt.Sprintf("Temperature in %s: %.1f°C\nPressure: %d hPa\nHumidity: %d%%\nMin: %.1f°C\nMax: %.1f°C",
-				city, weather.Temp-273.15, weather.Pressure, weather.Humidity, weather.TempMin-273.15, weather.TempMax-273.15), nil)
-	})
-
-	b.Start()
-	if err != nil {
-		fmt.Println(err)
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID,
+			fmt.Sprintf("Темперетура в  %s сейчас %.2f°С, Влажнсть: %.2f%%\n", city, weather.Temperature, weather.Humidity))
+		bot.Send(msg)
 	}
-
 }
 
-func getWeather(city string) (*Weather, error) {
-	resp, err := http.Get("http://api.openweathermap.org/geo/1.0/weather?q=" + city + "&limit=5&appid={YourOpenWetherToken}\n")
+func getWeather(city string) (Weather, error) {
+	w, err := openweathermap.NewCurrent("C", "ru", "69f419a6aafc99369a5ccacd7d5d5bb4")
 	if err != nil {
-		return nil, err
+		return Weather{}, err
 	}
-	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	w.CurrentByName(city)
 	if err != nil {
-		return nil, err
+		return Weather{}, err
 	}
 
-	var weather Weather
-	if err := json.Unmarshal(body, &weather); err != nil {
-		return nil, err
-	}
-
-	return &weather, nil
+	return Weather{
+		Temperature: w.Main.Temp,
+		Humidity:    float64(w.Main.Humidity),
+	}, nil
 }
