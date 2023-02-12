@@ -40,16 +40,16 @@ func main() {
 			continue
 		}
 
-		// обрезаем лишнее в название города
+		// обрезаем лишнее в название города(cut off the excess in the name of the city)
 		city := strings.TrimSpace(update.Message.Text)
-		//узнаем погоду для города
+		//узнаем погоду для города(find out the weather for the city)
 		weather, err := getWeather(city)
 		if err != nil {
-			//если произошла ошибка, отправляем сообщение об ошибке пользователю
+			//если произошла ошибка, отправляем сообщение об ошибке пользователю(if an error has occurred, we send an error message to the user)
 			bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, err.Error()))
 			continue
 		}
-		// создаем сообщение с информацией
+		// создаем сообщение с информацией(creating a message with information)
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID,
 			fmt.Sprintf("Температура  %s  %.1f°С;  Дождь за час  %.fmm;  Облачность %.f%%;  Влажность %.1f%%\n", city, weather.Temperature, weather.Rain, weather.Clouds, weather.Humidity))
 		//отправляем сообщение пользователю
@@ -57,7 +57,7 @@ func main() {
 	}
 }
 
-// функция извлекает погоду для города
+// функция извлекает погоду для города(function extracts the weather for the city)
 func getWeather(city string) (Weather, error) {
 	// Проверяем есть ли погода для города в кэше и действительна ли она по-прежнему(checking weather for the city is in the cache and whether it is valid)
 	if weather, ok := cache[city]; ok {
