@@ -5,79 +5,89 @@ import (
 	"github.com/Syfaro/telegram-bot-api"
 	"github.com/briandowns/openweathermap"
 	"strings"
+	"time"
 )
 
-// Weather структура для хранения информации о температуре и влажности
+// Структура Weather c информацией о погоде для города
 type Weather struct {
 	Temperature float64 `json:"temp"`
 	Humidity    float64 `json:"humidity"`
+	Clouds      float64 `json:"clouds"`
+	Rain        float64 `json:"rain"`
 }
 
+// кэш - это map, на которой хранится информация о погоде (the cache is a map on which weather information is stored)
+var cache = make(map[string]Weather)
+var cacheLife = make(map[string]time.Time)
+
 func main() {
-	// Создаем Telegram bot API
+	//  устанавливаем для бота API key (install the Api key for bot)
 	bot, err := tgbotapi.NewBotAPI("YourTelegramToken")
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	// включакм режим отладки
+	// включить режим отладки бота ( enable debug mode for bot)
 	bot.Debug = true
-
-	//Настроим обновления с таймаутом в 60 секунд
+	// создаем обновление конфигурации ( creating a configuration update)
 	updateConfig := tgbotapi.NewUpdate(0)
 	updateConfig.Timeout = 60
-
-	// Получаем обновление от бота
+	// получаем канал обновлений для бота ( get an update channel for the bot )
 	updates, err := bot.GetUpdatesChan(updateConfig)
-
-	//Циклический просмотр обновлений
+	// для update получаем каждый элемент из updates
 	for update := range updates {
-		//Пропускаем обновления без сообщений
+		//пропускаем обновление если сообшение nil (skip the update if the message is nil)
 		if update.Message == nil {
 			continue
 		}
 
-		// Проверяем, начинается ли сообщение с "/weather".
-		if !strings.HasPrefix(update.Message.Text, "/weather") {
-			continue
-		}
-
-		// Получаем название города из сообщения
-		city := strings.TrimSpace(strings.TrimPrefix(update.Message.Text, "/weather"))
-		//Получаем информацию о погоде в городе
+		// обрезаем лишнее в название города
+		city := strings.TrimSpace(update.Message.Text)
+		//узнаем погоду для города
 		weather, err := getWeather(city)
 		if err != nil {
-			// Отправляет сообщение об ошибке, если возникла проблема с получением информации о погоде
+			//если произошла ошибка, отправляем сообщение об ошибке пользователю
 			bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, err.Error()))
 			continue
 		}
-
-		// Создаем возвращаемое сообщение с информацией о погоде
+		// создаем сообщение с информацией
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID,
-			fmt.Sprintf("Темперетура в  %s сейчас %.2f°С, Влажнсть: %.2f%%\n", city, weather.Temperature, weather.Humidity))
-		// Отпровляем сообщение 
+			fmt.Sprintf("Температура  %s  %.1f°С;  Дождь за час  %.fmm;  Облачность %.f%%;  Влажность %.1f%%\n", city, weather.Temperature, weather.Rain, weather.Clouds, weather.Humidity))
+		//отправляем сообщение пользователю
 		bot.Send(msg)
 	}
 }
 
-// getWeather возвращает текущую информацию о погоде для города
+// функция извлекает погоду для города
 func getWeather(city string) (Weather, error) {
-	// Create a new instance of the OpenWeatherMap API
-	w, err := openweathermap.NewCurrent("C", "ru", "YourTokenOpenweather")
+	// Проверяем есть ли погода для города в кэше и действительна ли она по-прежнему(checking weather for the city is in the cache and whether it is valid)
+	if weather, ok := cache[city]; ok {
+		if time.Now().Before(cacheLife[city]) {
+			return weather, nil
+		}
+	}
+	//если погода отсутствует в кэше или срок ее истек, получить погоду из API(if the weather is not in the cache or it has expired, get the weather from the AP)
+	w, err := openweathermap.NewCurrent("C", "ru", "YourOpenweatherToken")
 	if err != nil {
 		return Weather{}, err
 	}
-
-	//Получаем текущую информацию о погоде в городе
+	// получаем погоду для города(getting the weather for the city)
 	w.CurrentByName(city)
 	if err != nil {
 		return Weather{}, err
 	}
-
-	// Возвращаем информацию о температуре и влажности в виде структуры 
-	return Weather{
+	//создаем структуру Weather с полученной информацией погоды(creating a Weather structure with the received weather information)
+	weather := Weather{
 		Temperature: w.Main.Temp,
 		Humidity:    float64(w.Main.Humidity),
-	}, nil
+		Clouds:      float64(w.Clouds.All),
+		Rain:        float64(w.Rain.OneH),
+	}
+
+	// Добавим weather в cashe и установим время хранения(Add weather to the cache and set the storage time)
+	cache[city] = weather
+	cacheLife[city] = time.Now().Add(time.Hour * 1)
+
+	return weather, nil
 }
+
 
