@@ -1,4 +1,4 @@
-# Weather
+# Weather Telegram bot API
 
 package main
 
