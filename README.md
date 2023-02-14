@@ -51,9 +51,12 @@ func main() {
 			bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, err.Error()))
 			continue
 		}
+		
 		// создаем сообщение с информацией(creating a message with information)
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID,
-			fmt.Sprintf("Температура  %s  %.1f°С;  Облачность %.f%%;   Влажность %.1f%%;    Дождь за час  %.fmm  \n", city, weather.Temperature, weather.Clouds, weather.Humidity, weather.Rain, ))
+			fmt.Sprintf("Температура  %s  %.1f°С;  Облачность %.f%%;   Влажность %.1f%%;    Дождь за час  %.fmm  \n",
+			city, weather.Temperature, weather.Clouds, weather.Humidity, weather.Rain, ))
+		
 		//отправляем сообщение пользователю
 		bot.Send(msg)
 	}
