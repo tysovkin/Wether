@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Структура Weather c информацией о погоде для города
+  создаем Структуру Weather c информацией о погоде для города
 type Weather struct {
 	Temperature float64 `json:"temp"`
 	Humidity    float64 `json:"humidity"`
