@@ -1,6 +1,6 @@
 # Weather Telegram Bot API
 
-![alt text](https://media.giphy.com/media/BhohLyxSq28qbyWZEi/giphy.gif)
+![alt text](<iframe src="https://giphy.com/embed/wN5XQI3C3NpHjbmMKq" width="480" height="351" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/wN5XQI3C3NpHjbmMKq">via GIPHY</a></p>)
 
 
 package main
