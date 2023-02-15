@@ -1,5 +1,8 @@
 # Weather Telegram Bot API
 
+![alt text](https://media.giphy.com/media/BhohLyxSq28qbyWZEi/giphy.gif)
+
+
 package main
 
 import (
