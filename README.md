@@ -3,15 +3,7 @@
 ![alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE4M2Y0MzAwMzBmY2IzNDIzNDQ0ZWE1YzMxMDk5OWE4NmJiM2YyMyZjdD1n/qemJG3Zif4NZE6miJ7/giphy.gif)
 
 
-package main
-
-import (
-	"fmt"
-	"github.com/Syfaro/telegram-bot-api"
-	"github.com/briandowns/openweathermap"
-	"strings"
-	"time"
-)
+Это Telegram-бот, который передает информацию о погоде для указаного города. Для получения информации о погоде используя OpenWeatherMap API
 
   создаем Структуру Weather c информацией о погоде для города
 type Weather struct {
