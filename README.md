@@ -22,7 +22,7 @@ When the user sends a message with the name of the city, the bot checks whether 
 
 Next, the bot sends the user a message with the weather for the specified city.
 #
- Credits
+# Credits
 * [Syfaro/telegram-bot-api](https://github.com/go-telegram-bot-api/telegram-bot-api)
 * [briandowns/openweathermap](https://github.com/briandowns/openweathermap)
 #
