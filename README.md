@@ -2,7 +2,7 @@
 # Weather Telegram Bot API
 
 ![alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE4M2Y0MzAwMzBmY2IzNDIzNDQ0ZWE1YzMxMDk5OWE4NmJiM2YyMyZjdD1n/qemJG3Zif4NZE6miJ7/giphy.gif)
-
+</h1>
 
 This is a Telegram bot that transmits weather information for the specified city. To get weather information, the OpenWeatherMap API is used
 
