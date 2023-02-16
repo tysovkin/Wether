@@ -15,6 +15,6 @@ When the user sends a message with the name of the city, the bot checks whether 
 
 Next, the bot sends the user a message with the weather for the specified city.
 
-Зависимости 
-github.com/Syfaro/telegram-bot-api - Telegram Bot API
-github.com/briandowns/openweathermap - OpenWeatherMap API wrapper
+## Credits
+* github.com/Syfaro/telegram-bot-api - Telegram Bot API
+*github.com/briandowns/openweathermap - OpenWeatherMap API wrapper
