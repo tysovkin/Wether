@@ -9,7 +9,7 @@ This is a Telegram bot that transmits weather information for the specified city
 We get the API key (Token) from OpenWeatherMap and Telegram.
 Use your own keys (Token) in the program
 
-How it works
+# How it works
 
 When the user sends a message with the name of the city, the bot checks whether the weather information is in the cache and whether it is valid. If the information is in the cache and it is valid, the bot takes the information. Otherwise, it makes a request to the OpenWeatherMap API to get weather information and stores it in the cache for an hour.
 
@@ -18,4 +18,4 @@ Next, the bot sends the user a message with the weather for the specified city.
 ## Credits
 * [Syfaro/telegram-bot-api](https://github.com/go-telegram-bot-api/telegram-bot-api)
 * [briandowns/openweathermap](https://github.com/briandowns/openweathermap)
-* [riobard/go-shadowsocks2](https://github.com/riobard/go-shadowsocks2)
+
