@@ -1,7 +1,7 @@
 # Weather Telegram Bot API
 
-![alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODNkM2QxZGI0MDM2MWFiODM5ZDljZGMzZjUxYTEzZjg5MWE2N2M3OCZjdD1n/wN5XQI3C3NpHjbmMKq/giphy.gif)
-![alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWI0MDJiNDBjNmY1Njg5YzViYWMxZjE5NWY3N2MwZGEyMWQxZmM5ZCZjdD1n/vmQiwPHYPTEwr4rAAs/giphy.gif)
+![alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE4M2Y0MzAwMzBmY2IzNDIzNDQ0ZWE1YzMxMDk5OWE4NmJiM2YyMyZjdD1n/qemJG3Zif4NZE6miJ7/giphy.gif)
+
 
 package main
 
