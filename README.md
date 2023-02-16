@@ -17,4 +17,4 @@ Next, the bot sends the user a message with the weather for the specified city.
 
 ## Credits
 * github.com/Syfaro/telegram-bot-api - Telegram Bot API
-*github.com/briandowns/openweathermap - OpenWeatherMap API wrapper
+* github.com/briandowns/openweathermap - OpenWeatherMap API wrapper
