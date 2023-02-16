@@ -10,7 +10,7 @@
  
 
 # 
- # This is a
+ # This is 
  Telegram bot that transmits weather information for the specified city. To get weather information, the OpenWeatherMap API is used
 
 We get the API key (Token) from OpenWeatherMap and Telegram.
